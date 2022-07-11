@@ -1,4 +1,5 @@
 # Importando a biblioteca socket
+from posixpath import split
 import socket, sys, os
 from datetime import datetime
 
@@ -65,9 +66,16 @@ try:
         
         # Fazendo Download do Arquivo
         elif '\\D:' in mensagem.upper():
-            print(f'\n Efetua o Download do Arquivo... {cliente} ...\n')
-            mensagem_volta = '\nAinda em Construção... '
-            con.send(mensagem_volta.encode(CODE_PAGE))
+            arquivo = mensagem.split(':',1)
+            try:
+              with open(caminho+'\\'+arquivo[1],'rb') as arquivo:
+                for data in arquivo:                  
+                  con.send(data)                           
+                print('Arquivo Enviado')
+            except:
+                print('Arquivo Inesistente')
+
+
         
         # Fazendo Upload do Arquivo 
         elif '\\U:' in mensagem.upper():
