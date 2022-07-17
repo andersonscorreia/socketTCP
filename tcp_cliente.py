@@ -29,32 +29,15 @@ while True:
             data_retorno = tcp_socket.recv(BUFFER_SIZE)
             msg_retorno  = data_retorno.decode(CODE_PAGE)
             a = int(msg_retorno)
-            f = -1
-            with open(caminho+'\\'+arquivo[1],'wb') as arq:
-                data_retorno = tcp_socket.recv(BUFFER_SIZE)                                        
-                while 1:
-                    arq.write(data_retorno)
-                    f += 1
-                    b = os.path.getsize(caminho+'\\'+arquivo[1])
-                    print(b)
-                    print(f)
-                    if f*BUFFER_SIZE >= a:break
-                    
+            
+            with open(caminho+'\\'+arquivo[1],'wb') as arq:                
+                f = -1                                      
+                while f*BUFFER_SIZE <= a:
                     data_retorno = tcp_socket.recv(BUFFER_SIZE)
+                    arq.write(data_retorno)
+                    print(f)
+                    f += 1          
                     
-                    
-                                       
-                    
-                                       
-                
-
-
-                                       
-                     
-                
-
-                    
-
 
                 print('Recebido')              
 
