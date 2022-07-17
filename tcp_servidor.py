@@ -82,8 +82,8 @@ try:
               con.send(mensagem_volta.encode(CODE_PAGE))             
               print(a)
               print(type(a))
-              with open(caminho+'\\'+arquivo[1],'rb') as arquivo:
-                for data in arquivo:                                   
+              with open(caminho+'\\'+arquivo[1],'rb') as arq:
+                for data in arq:                                   
                   con.send(data)                          
               
                 print('Arquivo Enviado')
