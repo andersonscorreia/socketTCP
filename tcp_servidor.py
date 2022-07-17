@@ -2,10 +2,11 @@
 from posixpath import split
 import socket, sys, os
 from datetime import datetime
+from time import sleep
 
 HOST        = ''      # Definindo o IP do servidor
 PORT        = 65000   # Definindo a porta
-BUFFER_SIZE = 1024      # Definindo o tamanho do buffer
+BUFFER_SIZE = 1024     # Definindo o tamanho do buffer
 CODE_PAGE   = 'utf-8' # Definindo a página de codificação de caracteres
 MAX_LISTEN  = 10       # Definindo o máximo de conexões enfileiradas
 
@@ -68,9 +69,15 @@ try:
         elif '\\D:' in mensagem.upper():
             arquivo = mensagem.split(':',1)
             try:
+              a = os.path.getsize(caminho+'\\'+arquivo[1])
+              mensagem_volta = str(a)
+              con.send(mensagem_volta.encode(CODE_PAGE))             
+              print(a)
+              print(type(a))
               with open(caminho+'\\'+arquivo[1],'rb') as arquivo:
-                for data in arquivo:                  
-                  con.send(data)                           
+                for data in arquivo.readlines():                                   
+                  con.send(data)                          
+              
                 print('Arquivo Enviado')
             except:
                 print('Arquivo Inesistente')

@@ -1,4 +1,6 @@
 # Importando a biblioteca socket
+from calendar import c
+from fileinput import close
 import socket,os
 
 HOST        = 'localhost' # Definindo o IP do servidor
@@ -24,12 +26,38 @@ while True:
     if msg.decode(CODE_PAGE).upper() == '\Q': break
     elif '\\D:' in mensagem.upper():
             arquivo = mensagem.split(':',1)
-            with open(caminho+'\\'+arquivo[1],'wb') as arquivo:
+            data_retorno = tcp_socket.recv(BUFFER_SIZE)
+            msg_retorno  = data_retorno.decode(CODE_PAGE)
+            a = int(msg_retorno)
+            f = -1
+            with open(caminho+'\\'+arquivo[1],'wb') as arq:
+                data_retorno = tcp_socket.recv(BUFFER_SIZE)                                        
                 while 1:
+                    arq.write(data_retorno)
+                    f += 1
+                    b = os.path.getsize(caminho+'\\'+arquivo[1])
+                    print(b)
+                    print(f)
+                    if f*BUFFER_SIZE >= a:break
+                    
                     data_retorno = tcp_socket.recv(BUFFER_SIZE)
-                    if not data_retorno:break
-                    arquivo.write(data_retorno)     
-                print('Recebido')
+                    
+                    
+                                       
+                    
+                                       
+                
+
+
+                                       
+                     
+                
+
+                    
+
+
+                print('Recebido')              
+
     else:
         # Recebendo echo do servidor
             data_retorno = tcp_socket.recv(BUFFER_SIZE)
