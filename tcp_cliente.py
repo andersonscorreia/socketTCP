@@ -1,6 +1,6 @@
 # Importando a biblioteca socket
-from calendar import c
-from fileinput import close
+
+
 import socket,os
 
 HOST        = 'localhost' # Definindo o IP do servidor
@@ -42,9 +42,10 @@ while True:
 
 
                 print('Recebido')      
-            arq.close()
+            
         except:
-            print('Erro no download')        
+            print('Erro no download') 
+        arq.close()         
     elif '\\U:' in mensagem.upper():
             arquivo = mensagem.split(':',1)
             try:
@@ -58,10 +59,10 @@ while True:
                   tcp_socket.send(data)                          
               
                 print('Arquivo Enviado')
-                arq.close()
+                
             except:              
                 print('Arquivo Inesistente')
-    
+            arq.close()
     
     else:
         # Recebendo echo do servidor

@@ -87,11 +87,11 @@ try:
                   con.send(data)                          
               
                 print('Arquivo Enviado')
-                arq.close()
+                
             except:                
                 con.send(mensagem_volta.encode(CODE_PAGE))
                 print('Arquivo Inesistente')
-
+            arq.close()
 
         
         # Fazendo Upload do Arquivo 
@@ -108,14 +108,14 @@ try:
                     data_retorno = con.recv(BUFFER_SIZE)
                     f += 1
                     arq.write(data_retorno)
-                    print(f)
-                             
+                    print(f)                            
 
 
                 print('Recebido')      
-            arq.close()
+            
           except:
             print('Erro no Upload') 
+          arq.close()
         else:
         # Imprimindo a mensagem recebida convertendo de bytes para string
           print(cliente, msg.decode(CODE_PAGE))
