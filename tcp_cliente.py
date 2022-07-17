@@ -42,6 +42,25 @@ while True:
              
         except:
             print('Erro no download')
+    elif '\\U:' in mensagem.upper():
+            arquivo = mensagem.split(':',1)
+            try:
+              a = os.path.getsize(caminho+'\\'+arquivo[1])
+              mensagem_volta = str(a)
+              tcp_socket.send(mensagem_volta.encode(CODE_PAGE))             
+              print(a)
+              print(type(a))
+              with open(caminho+'\\'+arquivo[1],'rb') as arquivo:
+                for data in arquivo:                                   
+                  tcp_socket.send(data)                          
+              
+                print('Arquivo Enviado')
+            except:
+                mensagem_volta = 'Erro no download '
+                tcp_socket.send(mensagem_volta.encode(CODE_PAGE))
+                print('Arquivo Inesistente')
+    
+    
     else:
         # Recebendo echo do servidor
             data_retorno = tcp_socket.recv(BUFFER_SIZE)

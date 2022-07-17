@@ -88,9 +88,23 @@ try:
         
         # Fazendo Upload do Arquivo 
         elif '\\U:' in mensagem.upper():
-            print(f'\n Efetua o Upload do Arquivo... {cliente} ...\n')
-            mensagem_volta = '\nAinda em Construção... '
-            con.send(mensagem_volta.encode(CODE_PAGE))
+          try:
+            arquivo = mensagem.split(':',1)
+            data_retorno = con.recv(BUFFER_SIZE)
+            msg_retorno  = data_retorno.decode(CODE_PAGE)
+            a = int(msg_retorno)            
+            with open(caminho+'\\'+arquivo[1],'wb') as arq:                
+                f = -1                                      
+                while f*BUFFER_SIZE <= a:
+                    data_retorno = con.recv(BUFFER_SIZE)
+                    arq.write(data_retorno)
+                    print()
+                    f += 1          
+            arq.close()
+            print('Recebido')
+             
+          except:
+            print('Erro no download')
 
         else:
         # Imprimindo a mensagem recebida convertendo de bytes para string
