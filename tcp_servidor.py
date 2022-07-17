@@ -18,7 +18,7 @@ tcp_socket.listen(MAX_LISTEN) # Máximo de conexões enfileiradas
 
 print('Recebendo Mensagens...\n\n')
 mensagensLog = ['\n']
-data = datetime.today().strftime('%Y-%m-%d %H:%M:%S')
+date = datetime.today().strftime('%Y-%m-%d %H:%M:%S')
 
 #Arquivos e Tamanho 
 caminho = os.path.dirname(os.path.abspath(__file__))+'\\server_files'
@@ -38,7 +38,7 @@ try:
         msg = con.recv(BUFFER_SIZE) #buffer de 1024 bytes
         mensagem = msg.decode(CODE_PAGE)
         
-        mensagensLog.append(data+'; '+cliente[0]+'; '+mensagem+'\n')
+        mensagensLog.append(date+'; '+cliente[0]+'; '+mensagem+'\n')
         
         listMensagens = '\n --Lista de Mensagens-- \n'
         
@@ -75,11 +75,13 @@ try:
               print(a)
               print(type(a))
               with open(caminho+'\\'+arquivo[1],'rb') as arquivo:
-                for data in arquivo.readlines():                                   
+                for data in arquivo:                                   
                   con.send(data)                          
               
                 print('Arquivo Enviado')
             except:
+                mensagem_volta = 'Erro no download '
+                con.send(mensagem_volta.encode(CODE_PAGE))
                 print('Arquivo Inesistente')
 
 
