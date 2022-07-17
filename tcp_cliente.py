@@ -53,15 +53,13 @@ while True:
               tcp_socket.send(mensagem_volta.encode(CODE_PAGE))             
               print(a)
               print(type(a))
-              with open(caminho+'\\'+arquivo[1],'rb') as arquivo:
-                for data in arquivo:                                   
+              with open(caminho+'\\'+arquivo[1],'rb') as arq:
+                for data in arq:                                   
                   tcp_socket.send(data)                          
               
                 print('Arquivo Enviado')
                 arq.close()
-            except:
-                mensagem_volta = 'Erro no download '
-                tcp_socket.send(mensagem_volta.encode(CODE_PAGE))
+            except:              
                 print('Arquivo Inesistente')
     
     

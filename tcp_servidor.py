@@ -88,8 +88,7 @@ try:
               
                 print('Arquivo Enviado')
                 arq.close()
-            except:
-                mensagem_volta = 'Erro no download '
+            except:                
                 con.send(mensagem_volta.encode(CODE_PAGE))
                 print('Arquivo Inesistente')
 
@@ -101,20 +100,22 @@ try:
             arquivo = mensagem.split(':',1)
             data_retorno = con.recv(BUFFER_SIZE)
             msg_retorno  = data_retorno.decode(CODE_PAGE)
-            a = int(msg_retorno)            
+            a = int(msg_retorno)
+
             with open(caminho+'\\'+arquivo[1],'wb') as arq:                
                 f = -1                                      
-                while f*BUFFER_SIZE <= a:
+                while f*BUFFER_SIZE <= a:                    
                     data_retorno = con.recv(BUFFER_SIZE)
+                    f += 1
                     arq.write(data_retorno)
-                    print()
-                    f += 1          
-            arq.close()
-            print('Recebido')
-             
-          except:
-            print('Erro no download')
+                    print(f)
+                             
 
+
+                print('Recebido')      
+            arq.close()
+          except:
+            print('Erro no Upload') 
         else:
         # Imprimindo a mensagem recebida convertendo de bytes para string
           print(cliente, msg.decode(CODE_PAGE))
