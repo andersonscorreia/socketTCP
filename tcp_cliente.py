@@ -25,6 +25,7 @@ while True:
    
     if msg.decode(CODE_PAGE).upper() == '\Q': break
     elif '\\D:' in mensagem.upper():
+        try:
             arquivo = mensagem.split(':',1)
             data_retorno = tcp_socket.recv(BUFFER_SIZE)
             msg_retorno  = data_retorno.decode(CODE_PAGE)
@@ -32,8 +33,7 @@ while True:
 
             with open(caminho+'\\'+arquivo[1],'wb') as arq:                
                 f = -1                                      
-                while f*BUFFER_SIZE <= a:
-                    
+                while f*BUFFER_SIZE <= a:                    
                     data_retorno = tcp_socket.recv(BUFFER_SIZE)
                     f += 1
                     arq.write(data_retorno)
@@ -43,7 +43,8 @@ while True:
 
                 print('Recebido')      
             arq.close()
-                
+        except:
+            print('Erro no download')        
     elif '\\U:' in mensagem.upper():
             arquivo = mensagem.split(':',1)
             try:
