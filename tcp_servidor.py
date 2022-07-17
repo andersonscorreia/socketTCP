@@ -22,13 +22,8 @@ date = datetime.today().strftime('%Y-%m-%d %H:%M:%S')
 
 #Arquivos e Tamanho 
 caminho = os.path.dirname(os.path.abspath(__file__))+'\\server_files'
-listArquivos = os.listdir(caminho)
-dictArquivos = {}
-for i in listArquivos:    
-    dictArquivos.update({i:os.path.getsize(caminho+'\\'+i)}) 
-arquivosTamanho =''
-for i,j in dictArquivos.items():
-    arquivosTamanho = arquivosTamanho+i+';'+str(j)+'\n'
+
+
 
 try:
   while True:
@@ -47,7 +42,7 @@ try:
         # Mandando Ajuda 
         if mensagem.upper() == '\\H':
           print(f'\nMandando Ajuda Para {cliente} ...\n')
-          mensagem_volta = '\n --Listas de Comando-- \n \\f -- Listar Arquivos \n \\d:nome_arquivo -- Efetua o Download do Arquivo \n \\u:nome_arquivo -- Efetua o Upload do Arquivo \n \\q -- Sair do Cliente \n'                
+          mensagem_volta = '\n --Listas de Comando-- \n \\f -- Listar Arquivos \n \\d:nome_arquivo -- Efetua o Download do Arquivo \n \\u:nome_arquivo -- Efetua o Upload do Arquivo \n \\q -- Sair do Cliente \n \\m -- lista Mensagens recebidas pelo servidor \n'                
           con.send(mensagem_volta.encode(CODE_PAGE))
         
         # Mensagem de desconexão 
@@ -56,12 +51,25 @@ try:
         
         # Mandando lista de Arquivos 
         elif mensagem.upper() == '\\F':
-          mensagem_volta = arquivosTamanho
-          con.send(mensagem_volta.encode(CODE_PAGE))
-        
+          
+            listArquivos = os.listdir(caminho)
+            dictArquivos = {}
+            for i in listArquivos:    
+              dictArquivos.update({i:os.path.getsize(caminho+'\\'+i)}) 
+            arquivosTamanho =''
+            for i,j in dictArquivos.items():
+              arquivosTamanho = arquivosTamanho+i+';'+str(j)+'\n'
+            
+            if len(arquivosTamanho) > 0 :
+              mensagem_volta = arquivosTamanho
+              con.send(mensagem_volta.encode(CODE_PAGE))
+            else:
+              mensagem_volta = 'Sem Arquivos Disponíveis no Momento'
+              con.send(mensagem_volta.encode(CODE_PAGE))
+    
         #Mandando Lista de Mensagens 
         elif mensagem.upper() == '\\M':
-          print(f'\n Efetua o Upload do Arquivo... {cliente} ...\n')
+         
           mensagem_volta = listMensagens
           con.send(mensagem_volta.encode(CODE_PAGE))
         
@@ -79,6 +87,7 @@ try:
                   con.send(data)                          
               
                 print('Arquivo Enviado')
+                arq.close()
             except:
                 mensagem_volta = 'Erro no download '
                 con.send(mensagem_volta.encode(CODE_PAGE))

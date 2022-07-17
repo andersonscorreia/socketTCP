@@ -55,6 +55,7 @@ while True:
                   tcp_socket.send(data)                          
               
                 print('Arquivo Enviado')
+                arq.close()
             except:
                 mensagem_volta = 'Erro no download '
                 tcp_socket.send(mensagem_volta.encode(CODE_PAGE))
