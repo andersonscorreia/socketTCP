@@ -1,5 +1,5 @@
 # Importando a biblioteca socket
-import socket, sys, os
+import socket, sys, os,threading
 from server_config import *
 
 
@@ -11,12 +11,12 @@ tcp_socket.listen(MAX_LISTEN) # Máximo de conexões enfileiradas
 
 print('Recebendo Mensagens...\n\n')
 
-
-try:
-  while True:
-    con, cliente = tcp_socket.accept() # Aceita a conexão com o cliente
-    print('Conectado por: ', cliente)
+def ligar(BUFFER_SIZE,CODE_PAGE,tcp_socket):
+  try:
     while True:
+      con, cliente = tcp_socket.accept() # Aceita a conexão com o cliente
+      print('Conectado por: ', cliente)
+      while True:
         msg = con.recv(BUFFER_SIZE) #buffer de 1024 bytes
         mensagem = msg.decode(CODE_PAGE)        
         mensagensLog.append(date+'; '+cliente[0]+'; '+mensagem+'\n')        
@@ -44,7 +44,7 @@ try:
 
         #Mandando Lista de Mensagens 
         elif mensagem.upper() == '\\M':
-          mensagemLog = f'[{date}] {cliente} - CLIENTE SOLICITOU A LISTA DE ARQUIVOS DISPONIVEIS'
+          mensagemLog = f'[{date}] {cliente} - CLIENTE SOLICITOU MENSAGENS DO ARQUIVO LOG'
           arquivoLog(mensagemLog)
           mensagens(con,caminhoLog)
           
@@ -71,8 +71,14 @@ try:
           arquivoLog(mensagemLog)
           msg_retorno =  msg.decode(CODE_PAGE)
           con.send(msg_retorno.encode(CODE_PAGE))
-except:
-  print(f'\nERRO: {sys.exc_info()[0]}')
-finally: 
+  except:
+    print(f'\nERRO: {sys.exc_info()[0]}')
+  
+  finally:
+
    print('Finalizando Conexão do Cliente ', cliente)
    con.close()
+
+while True:
+    cliente = threading.Thread(target=ligar, args=[BUFFER_SIZE,CODE_PAGE,tcp_socket])
+    cliente.start()
