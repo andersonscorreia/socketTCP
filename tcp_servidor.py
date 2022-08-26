@@ -18,7 +18,7 @@ def ligar(BUFFER_SIZE,CODE_PAGE,tcp_socket):
   try:
     while True:
       con, cliente = tcp_socket.accept() # Aceita a conexão com o cliente
-     
+      idUser(con,cliente)
       while True:
         msg = con.recv(BUFFER_SIZE) #buffer de 1024 bytes
         mensagem = msg.decode(CODE_PAGE)        
@@ -64,6 +64,12 @@ def ligar(BUFFER_SIZE,CODE_PAGE,tcp_socket):
           mensagemLog = f'[{date}] {cliente} - CLIENTE SOLICITOU UPLOAD DE ARQUIVO'
           arquivoLog(mensagemLog)
           upload(caminhoServer,con,mensagem)
+        
+        # lista de Ids dos usuarios 
+        elif mensagem.upper() == '\\ID':
+          mensagemLog = f'[{date}] {cliente} - CLIENTE SOLICITOU LISTA DE IDs DOS USUARIOS'
+          arquivoLog(mensagemLog)
+          enviarId(con)
  
         else:
 
@@ -84,7 +90,9 @@ def ligar(BUFFER_SIZE,CODE_PAGE,tcp_socket):
     mensagemLog = f'[{date}] {cliente} - Finalizando Conexão do Cliente'
     arquivoLog(mensagemLog)
     con.close()
-
-while True:
+try:
+  while True:
     cliente = threading.Thread(target=ligar, args=[BUFFER_SIZE,CODE_PAGE,tcp_socket])
     cliente.start()
+except:
+  print(f'\nERRO: {sys.exc_info()[0]}')

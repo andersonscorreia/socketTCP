@@ -16,7 +16,7 @@ date = datetime.today().strftime('%Y-%m-%d %H:%M:%S')
 caminhoServer = os.path.dirname(os.path.abspath(__file__))+'\\server_files'
 caminhoLog = os.path.dirname(os.path.abspath(__file__))+'\\log_files'
 def ajuda(CODE_PAGE,con):
-        mensagem_volta = '\n --Listas de Comando-- \n \\f -- Listar Arquivos \n \\d:nome_arquivo -- Efetua o Download do Arquivo \n \\u:nome_arquivo -- Efetua o Upload do Arquivo \n \\q -- Sair do Cliente \n \\m -- lista Mensagens recebidas pelo servidor \n'                
+        mensagem_volta = '\n --Listas de Comando-- \n \\f -- Listar Arquivos \n \\d:nome_arquivo -- Efetua o Download do Arquivo \n \\u:nome_arquivo -- Efetua o Upload do Arquivo \n \\q -- Sair do Cliente \n \\m -- listar Mensagens recebidas pelo servidor \n \\id -- listar id dos ususarios no sistema\n '                
         con.send(mensagem_volta.encode(CODE_PAGE))
 
 
@@ -98,7 +98,42 @@ def arquivoLog(mensagemLog):
         with open(f'{caminhoLog}\\logServer.txt', 'a') as arquivo:             
                 arquivo.write(f'{mensagemLog}\n')
         arquivo.close
-        
+
+
+def listusers():
+        id={}
+        with open(f'{caminhoLog}\\clientID.txt', 'r') as arquivo:
+            linhas = arquivo.readlines()
+            for linha in linhas:
+                a = (linha.strip().split(';'))
+                b = [a[1],a[2]]
+                id.update({a[0]:b})
+        return id
+
+def idUser(con,cliente):
+    def adicinarUser(idUser):
+        with open (f'{caminhoLog}\\clientID.txt', 'a') as arquivo:
+            arquivo.write(f'{idUser};{con};{cliente}\n')
+            arquivo.close
+    def proximoID():  
+        for i in listusers():    
+            f = int(i)
+        f += 1
+        return f
+    if os.path.isfile(f'{caminhoLog}\\clientID.txt'):
+        idUser = proximoID()
+        adicinarUser(idUser)
+    else:
+        idUser = 0
+        adicinarUser(idUser)
+
+
+def enviarId(con):
+    listIDs = '\nID | IP do Usuario\n'
+    for i,j in listusers().items():
+        listIDs +=f'{i}  | {j[1]}\n'
+    mensagem_volta = listIDs
+    con.send(mensagem_volta.encode(CODE_PAGE))
 
 
 
