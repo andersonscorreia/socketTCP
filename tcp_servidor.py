@@ -1,4 +1,3 @@
-#!/bin/env python3
 # Para executar no Linux, digite './tcp_servidor.py' no terminal
 # Para executar no Windows, digite 'tcp_servidor.py' no Prompt de Comando
 # Importando a biblioteca socket
@@ -15,10 +14,11 @@ tcp_socket.listen(MAX_LISTEN) # Máximo de conexões enfileiradas
 
 
 def ligar(BUFFER_SIZE,CODE_PAGE,tcp_socket):
+
   try:
     while True:
       con, cliente = tcp_socket.accept() # Aceita a conexão com o cliente
-      idUser(con,cliente)
+      
       while True:
         msg = con.recv(BUFFER_SIZE) #buffer de 1024 bytes
         mensagem = msg.decode(CODE_PAGE)        
@@ -63,14 +63,21 @@ def ligar(BUFFER_SIZE,CODE_PAGE,tcp_socket):
         elif '\\U:' in mensagem.upper():
           mensagemLog = f'[{date}] {cliente} - CLIENTE SOLICITOU UPLOAD DE ARQUIVO'
           arquivoLog(mensagemLog)
-          upload(caminhoServer,con,mensagem)
-        
-        # lista de Ids dos usuarios 
-        elif mensagem.upper() == '\\ID':
-          mensagemLog = f'[{date}] {cliente} - CLIENTE SOLICITOU LISTA DE IDs DOS USUARIOS'
-          arquivoLog(mensagemLog)
-          enviarId(con)
+          upload(caminhoServer,con,mensagem)        
  
+        #Fazendo pesquisa no Youtube
+        elif '\\Y:' in mensagem.upper():
+          pesquisa = mensagem.split(':',1)          
+          con.send(youtube(pesquisa[1]).encode(CODE_PAGE))          
+        elif '\\RSS:' in mensagem.upper():
+          pesquisa = mensagem.split(':',1)          
+          con.send(youtube(pesquisa[1]).encode(CODE_PAGE))
+        
+        elif '\\@:' in mensagem.upper():
+          pesquisa = mensagem.split(':',1)          
+          con.send(twitter(pesquisa[1]).encode(CODE_PAGE))
+          
+
         else:
 
         # mensagem recebida convertendo de bytes para string

@@ -1,5 +1,5 @@
 from fileinput import close
-import sys, os
+import sys, os,requests
 from datetime import datetime
 from time import sleep
 
@@ -99,41 +99,48 @@ def arquivoLog(mensagemLog):
                 arquivo.write(f'{mensagemLog}\n')
         arquivo.close
 
-
-def listusers():
-        id={}
-        with open(f'{caminhoLog}\\clientID.txt', 'r') as arquivo:
-            linhas = arquivo.readlines()
-            for linha in linhas:
-                a = (linha.strip().split(';'))
-                b = [a[1],a[2]]
-                id.update({a[0]:b})
-        return id
-
-def idUser(con,cliente):
-    def adicinarUser(idUser):
-        with open (f'{caminhoLog}\\clientID.txt', 'a') as arquivo:
-            arquivo.write(f'{idUser};{con};{cliente}\n')
-            arquivo.close
-    def proximoID():  
-        for i in listusers():    
-            f = int(i)
-        f += 1
-        return f
-    if os.path.isfile(f'{caminhoLog}\\clientID.txt'):
-        idUser = proximoID()
-        adicinarUser(idUser)
-    else:
-        idUser = 0
-        adicinarUser(idUser)
+def youtube(pesquisa):
+        YOUR_API_KEY = 'AIzaSyDd5bMLeOuo6yORKnq9rNKIm1EGFX6j9HQ'
+        SEARCH = pesquisa
+        TYPE = 'video'
+        RESULT_NUM = '10'
 
 
-def enviarId(con):
-    listIDs = '\nID | IP do Usuario\n'
-    for i,j in listusers().items():
-        listIDs +=f'{i}  | {j[1]}\n'
-    mensagem_volta = listIDs
-    con.send(mensagem_volta.encode(CODE_PAGE))
+        r = requests.get(f'https://youtube.googleapis.com/youtube/v3/search?title&maxResults={RESULT_NUM}&q={SEARCH}%20&type={TYPE}&key={YOUR_API_KEY}')
+        listVideo = r.json()
+        lista = listVideo['items']
+        listId = [] 
+        videos = '\n'
+        for i in lista:
+        
+                a = i['id']['videoId']
+                listId.append(a) 
+        for ID in listId:    
+                p = requests.get(f'https://youtube.googleapis.com/youtube/v3/videos?part=snippet&id={ID}&key={YOUR_API_KEY}')
+                descri = p.json()    
+        
+                for i in descri['items']:           
+                        canal = i['snippet']['channelTitle']
+                        titulo = i['snippet']['title']
+                        link = f'https://www.youtube.com/watch?v={ID}'
+                        videos += (f'Canal: {canal}\nTítulo: {titulo}\nLink: {link}\n\n') 
+        return videos
+
+def twitter(usuario):
+    try:
+        
+        TOKEN = 'AAAAAAAAAAAAAAAAAAAAAHwgfwEAAAAAu2Vj3gevg62%2F6yTnCd%2FtclIn9bQ%3Dxz0tZpZKYBRyipt4RXId3SGCQ5NylGNse3oR9GDpRLrGW22ehZ'
+        headers = {
+                    'Authorization': f'Bearer {TOKEN}',
+                        'Content-Type': 'application/json',
+                }
 
 
+        r = requests.get(f'https://api.twitter.com/2/users/by/username/{usuario}?user.fields=name%2Cdescription%2Cpublic_metrics%2Cverified%2Clocation%2Curl',headers = headers )
+        a = r.json()
 
+
+        b = f" \n Nome: {a['data']['name']} \n Username: {a['data']['username']} \n Descrição: {a['data']['description']}\n Seguidores: {a['data']['public_metrics']['followers_count']} \n Seguindo: {a['data']['public_metrics']['following_count']}\n url: https://twitter.com/{a['data']['username']}"
+        return b
+    except:
+        return('Usuario não existe')

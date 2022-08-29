@@ -16,7 +16,7 @@ tcp_socket.connect((HOST, PORT)) # Ligando o socket a porta
 caminho = os.path.dirname(os.path.abspath(__file__))+'\\client_files'
 
 while True:
-    mensagem = input('Digite a mensagem (\h -- Ajuda): ')
+    mensagem = input('Digite a mensagem (\h -- Ajuda): \n')
     
     # Convertendo a mensagem digitada de string para bytes
     msg = mensagem.encode(CODE_PAGE)
@@ -68,7 +68,7 @@ while True:
         # Recebendo echo do servidor
             data_retorno = tcp_socket.recv(BUFFER_SIZE)
             msg_retorno  = data_retorno.decode(CODE_PAGE)
-            print(f'Echo Recebido: {msg_retorno}')
+            print(f'{msg_retorno}')
 
 # Fechando o socket
 tcp_socket.close()

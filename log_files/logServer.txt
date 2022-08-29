@@ -12,3 +12,56 @@
 [2022-08-25 15:25:35] ('127.0.0.1', 64836) - CLIENTE SOLICITOU A LISTA DE ARQUIVOS DISPONIVEIS
 [2022-08-25 15:25:35] ('127.0.0.1', 64834) - a
 [2022-08-25 15:25:35] ('127.0.0.1', 64836) - b
+[2022-08-28 20:07:57] ('127.0.0.1', 61211) - CLIENTE SOLICITOU AJUDA
+[2022-08-28 20:09:03] ('127.0.0.1', 61227) - 
+ERRO: <class 'NameError'>
+[2022-08-28 20:09:03] ('127.0.0.1', 61227) - Finalizando Conexão do Cliente
+[2022-08-28 20:09:58] ('127.0.0.1', 61230) - CLIENTE SOLICITOU AJUDA
+[2022-08-28 20:09:58] ('127.0.0.1', 61230) - CLIENTE SOLICITOU A LISTA DE ARQUIVOS DISPONIVEIS
+[2022-08-28 20:09:58] ('127.0.0.1', 61230) - 
+ERRO: <class 'ConnectionResetError'>
+[2022-08-28 20:09:58] ('127.0.0.1', 61230) - Finalizando Conexão do Cliente
+[2022-08-28 20:11:18] ('127.0.0.1', 61240) - CLIENTE SOLICITOU AJUDA
+[2022-08-28 20:11:18] ('127.0.0.1', 61240) - 
+ERRO: <class 'ConnectionResetError'>
+[2022-08-28 20:11:18] ('127.0.0.1', 61240) - Finalizando Conexão do Cliente
+[2022-08-28 20:11:18] ('127.0.0.1', 53828) - CLIENTE SOLICITOU AJUDA
+[2022-08-28 20:11:18] ('127.0.0.1', 53828) - 
+ERRO: <class 'ConnectionResetError'>
+[2022-08-28 20:11:18] ('127.0.0.1', 53828) - Finalizando Conexão do Cliente
+[2022-08-28 21:26:20] ('127.0.0.1', 61146) - \y:lula
+[2022-08-28 21:26:20] ('127.0.0.1', 61146) - \\y:lula
+[2022-08-28 21:26:20] ('127.0.0.1', 61146) - CLIENTE SOLICITOU AJUDA
+[2022-08-28 21:26:20] ('127.0.0.1', 61146) - \y:lula
+[2022-08-28 21:29:04] ('127.0.0.1', 61175) - \y:lula
+[2022-08-28 21:29:04] ('127.0.0.1', 61175) - 
+ERRO: <class 'ConnectionResetError'>
+[2022-08-28 21:29:04] ('127.0.0.1', 61175) - Finalizando Conexão do Cliente
+[2022-08-28 21:30:41] ('127.0.0.1', 61218) - 
+ERRO: <class 'KeyError'>
+[2022-08-28 21:30:41] ('127.0.0.1', 61218) - Finalizando Conexão do Cliente
+[2022-08-28 21:31:43] ('127.0.0.1', 61230) - 
+ERRO: <class 'KeyError'>
+[2022-08-28 21:31:43] ('127.0.0.1', 61230) - Finalizando Conexão do Cliente
+[2022-08-28 21:32:35] ('127.0.0.1', 61241) - 
+ERRO: <class 'KeyError'>
+[2022-08-28 21:32:35] ('127.0.0.1', 61241) - Finalizando Conexão do Cliente
+[2022-08-28 21:34:54] ('127.0.0.1', 61307) - 
+ERRO: <class 'ConnectionResetError'>
+[2022-08-28 21:34:54] ('127.0.0.1', 61307) - Finalizando Conexão do Cliente
+[2022-08-28 21:36:12] ('127.0.0.1', 61330) - 
+ERRO: <class 'KeyError'>
+[2022-08-28 21:36:12] ('127.0.0.1', 61330) - Finalizando Conexão do Cliente
+[2022-08-28 21:38:07] ('127.0.0.1', 61408) - 
+ERRO: <class 'ConnectionResetError'>
+[2022-08-28 21:38:07] ('127.0.0.1', 61408) - Finalizando Conexão do Cliente
+[2022-08-28 23:36:46] ('127.0.0.1', 59420) - CLIENTE SOLICITOU AJUDA
+[2022-08-28 23:36:46] ('127.0.0.1', 59420) - 
+ERRO: <class 'ConnectionResetError'>
+[2022-08-28 23:36:46] ('127.0.0.1', 59420) - Finalizando Conexão do Cliente
+[2022-08-28 23:38:27] ('127.0.0.1', 59438) - 
+ERRO: <class 'ConnectionResetError'>
+[2022-08-28 23:38:27] ('127.0.0.1', 59438) - Finalizando Conexão do Cliente
+[2022-08-28 23:41:38] ('127.0.0.1', 59481) - 
+ERRO: <class 'ConnectionResetError'>
+[2022-08-28 23:41:38] ('127.0.0.1', 59481) - Finalizando Conexão do Cliente
