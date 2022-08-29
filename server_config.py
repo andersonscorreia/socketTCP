@@ -100,7 +100,7 @@ def arquivoLog(mensagemLog):
         arquivo.close
 
 def youtube(pesquisa):
-        YOUR_API_KEY = 'AIzaSyDd5bMLeOuo6yORKnq9rNKIm1EGFX6j9HQ'
+        YOUR_API_KEY = ''
         SEARCH = pesquisa
         TYPE = 'video'
         RESULT_NUM = '10'
@@ -129,7 +129,7 @@ def youtube(pesquisa):
 def twitter(usuario):
     try:
         
-        TOKEN = 'AAAAAAAAAAAAAAAAAAAAAHwgfwEAAAAAu2Vj3gevg62%2F6yTnCd%2FtclIn9bQ%3Dxz0tZpZKYBRyipt4RXId3SGCQ5NylGNse3oR9GDpRLrGW22ehZ'
+        TOKEN = ''
         headers = {
                     'Authorization': f'Bearer {TOKEN}',
                         'Content-Type': 'application/json',
