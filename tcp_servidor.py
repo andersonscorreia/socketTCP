@@ -10,14 +10,17 @@ tcp_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
 tcp_socket.bind((HOST, PORT)) # Ligando o socket a porta
 tcp_socket.listen(MAX_LISTEN) # Máximo de conexões enfileiradas
+def nonexão():
+  while True:
+    con, cliente = tcp_socket.accept() # Aceita a conexão com o cliente
+    cliente = threading.Thread(target=ligar, args=[con,cliente])
+    cliente.start()
 
-
-
-def ligar(BUFFER_SIZE,CODE_PAGE,tcp_socket):
+def ligar(con,cliente):
 
   try:
     while True:
-      con, cliente = tcp_socket.accept() # Aceita a conexão com o cliente
+      
       
       while True:
         msg = con.recv(BUFFER_SIZE) #buffer de 1024 bytes
@@ -67,21 +70,25 @@ def ligar(BUFFER_SIZE,CODE_PAGE,tcp_socket):
  
         #Fazendo pesquisa no Youtube
         elif '\\Y:' in mensagem.upper():
+          mensagemLog = f'[{date}] {cliente} - CLIENTE SOLICITOU UMA PESQUISA NO YOUTUBE'
+          arquivoLog(mensagemLog)
           pesquisa = mensagem.split(':',1)          
           con.send(youtube(pesquisa[1]).encode(CODE_PAGE))          
         elif '\\RSS:' in mensagem.upper():
+          mensagemLog = f'[{date}] {cliente} - CLIENTE SOLICITOU UMA PESQUISA DE NOTICIAS'
+          arquivoLog(mensagemLog)
           pesquisa = mensagem.split(':',1)          
           con.send(youtube(pesquisa[1]).encode(CODE_PAGE))
         
         elif '\\@:' in mensagem.upper():
+          mensagemLog = f'[{date}] {cliente} - CLIENTE SOLICITOU DADOS DE UM USUARIO DO TWITTER'
+          arquivoLog(mensagemLog)
           pesquisa = mensagem.split(':',1)          
           con.send(twitter(pesquisa[1]).encode(CODE_PAGE))
           
 
         else:
 
-        # mensagem recebida convertendo de bytes para string
-          recebida = (cliente, msg.decode(CODE_PAGE))
         # Devolvendo uma mensagem (echo) ao cliente
           mensagemLog = f'[{date}] {cliente} - {msg.decode(CODE_PAGE)}'
           arquivoLog(mensagemLog)
@@ -97,9 +104,11 @@ def ligar(BUFFER_SIZE,CODE_PAGE,tcp_socket):
     mensagemLog = f'[{date}] {cliente} - Finalizando Conexão do Cliente'
     arquivoLog(mensagemLog)
     con.close()
-try:
-  while True:
-    cliente = threading.Thread(target=ligar, args=[BUFFER_SIZE,CODE_PAGE,tcp_socket])
-    cliente.start()
-except:
+
   print(f'\nERRO: {sys.exc_info()[0]}')
+
+
+def main():
+  nonexão()
+if __name__ == '__main__':
+  main()
