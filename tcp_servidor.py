@@ -13,11 +13,11 @@ tcp_socket.listen(MAX_LISTEN) # Máximo de conexões enfileiradas
 def nonexão():
   while True:
     con, cliente = tcp_socket.accept() # Aceita a conexão com o cliente
-    cliente = threading.Thread(target=ligar, args=[con,cliente])
-    cliente.start()
-
+    on = threading.Thread(target=ligar, args=[con,cliente])
+    on.start()
+    mensagemLog = f'[{date}] {cliente} - CLIENTE SE CONECTOU'
+    arquivoLog(mensagemLog)
 def ligar(con,cliente):
-
   try:
     while True:
       
@@ -33,8 +33,7 @@ def ligar(con,cliente):
         if mensagem.upper() == '\\H':
           mensagemLog = f'[{date}] {cliente} - CLIENTE SOLICITOU AJUDA'
           arquivoLog(mensagemLog)
-          ajuda(CODE_PAGE,con)
-                  
+          ajuda(CODE_PAGE,con)                 
 
         
         # Mensagem de desconexão 
