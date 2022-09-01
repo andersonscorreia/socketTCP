@@ -1,12 +1,12 @@
 from fileinput import close
-import sys, os,requests
+import sys, os, requests
 from datetime import datetime
 from time import sleep
 
 
 HOST        = ''      # Definindo o IP do servidor
-PORT        = 65000   # Definindo a porta
-BUFFER_SIZE = 1024     # Definindo o tamanho do buffer
+PORT        = 65000    # Definindo a porta
+BUFFER_SIZE = 4096     # Definindo o tamanho do buffer
 CODE_PAGE   = 'utf-8' # Definindo a página de codificação de caracteres
 MAX_LISTEN  = 10       # Definindo o máximo de conexões enfileiradas
 
@@ -55,41 +55,37 @@ def mensagens(con,caminhoLog):
 def download(mensagem,con,caminhoServer):
         arquivo = mensagem.split(':',1)
         try:
-              a = os.path.getsize(caminhoServer+'\\'+arquivo[1])
-              mensagem_volta = str(a)
-              con.send(mensagem_volta.encode(CODE_PAGE))             
+                a = os.path.getsize(caminhoServer+'\\'+arquivo[1])
+                mensagem_volta = str(a)
+                con.send(mensagem_volta.encode(CODE_PAGE))             
     
-              with open(caminhoServer+'\\'+arquivo[1],'rb') as arq:
-                for data in arq:                                   
-                  con.send(data)                          
-              
-                sleep(0.001)
-                
+                with open(caminhoServer+'\\'+arquivo[1],'rb') as arq:
+                        for data in arq:                                   
+                                con.send(data)
+                        print('enviado')                        
+                arq.close()
         except:
                 mensagem_volta = 'Arquivo Inesistente'
                 con.send(mensagem_volta.encode(CODE_PAGE))                
               
                 
-        arq.close()
+       
 
 def upload(caminhoServer,con,mensagem):
         try:
             arquivo = mensagem.split(':',1)
-            data_retorno = con.recv(BUFFER_SIZE)
-            msg_retorno  = data_retorno.decode(CODE_PAGE)
-            a = int(msg_retorno)
+
 
             with open(caminhoServer+'\\'+arquivo[1],'wb') as arq:                
-                f = -1                                      
-                while f*BUFFER_SIZE <= a:                    
+                                                     
+                while 1:                     
                     data_retorno = con.recv(BUFFER_SIZE)
-                    f += 1
                     arq.write(data_retorno)
-                    sleep(0.001)                            
+                    sleep(0.0001) 
+                    if len(data_retorno)<BUFFER_SIZE:break   
 
+            print('Recebido')                         
 
-                  
-            
         except:
                 mensagem_volta = f'\nERRO: {sys.exc_info()[0]}'
                 con.send(mensagem_volta.encode(CODE_PAGE))                

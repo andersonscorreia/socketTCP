@@ -1,11 +1,11 @@
 # Importando a biblioteca socket
 
-
-import socket,os
+import socket,os,tqdm
+from time import sleep
 
 HOST        = 'localhost' # Definindo o IP do servidor
 PORT        = 65000       # Definindo a porta
-BUFFER_SIZE = 1024         # Definindo o tamanho do buffer
+BUFFER_SIZE = 4096         # Definindo o tamanho do buffer
 CODE_PAGE   = 'utf-8'     # Definindo a página de codificação de caracteres
 
 # Criando o socket UDP
@@ -29,41 +29,28 @@ while True:
             arquivo = mensagem.split(':',1)
             data_retorno = tcp_socket.recv(BUFFER_SIZE)
             msg_retorno  = data_retorno.decode(CODE_PAGE)
-            a = int(msg_retorno)
-
-            with open(caminho+'\\'+arquivo[1],'wb') as arq:                
-                f = -1                                      
-                while f*BUFFER_SIZE <= a:                    
+            filesize = int(msg_retorno)               
+            with open(caminho+'\\'+arquivo[1],'wb') as arq:             
+                while 1:                        
                     data_retorno = tcp_socket.recv(BUFFER_SIZE)
-                    f += 1
                     arq.write(data_retorno)
-                    print(f)
-                             
-
-
-                print('Recebido')      
+                    sleep(0.0001)                                             
+                    if len(data_retorno)<BUFFER_SIZE:break
+            print('Recebido')      
             
         except:
             print('Erro no download') 
-        arq.close()         
-    elif '\\U:' in mensagem.upper():
-            arquivo = mensagem.split(':',1)
-            try:
-              a = os.path.getsize(caminho+'\\'+arquivo[1])
-              mensagem_volta = str(a)
-              tcp_socket.send(mensagem_volta.encode(CODE_PAGE))             
-              print(a)
-              print(type(a))
-              with open(caminho+'\\'+arquivo[1],'rb') as arq:
-                for data in arq:                                   
-                  tcp_socket.send(data)                          
-              
-                print('Arquivo Enviado')
                 
-            except:              
-                print('Arquivo Inesistente')
-            arq.close()
-    
+    elif '\\U:' in mensagem.upper():
+        arquivo = mensagem.split(':',1)
+        print(arquivo[1])
+        with open(caminho+'\\'+arquivo[1],'rb') as arq:
+                for data in arq:                                   
+                        tcp_socket.send(data)
+                print('enviado')                        
+        arq.close()
+      
+
     else:
         # Recebendo echo do servidor
             data_retorno = tcp_socket.recv(BUFFER_SIZE)
