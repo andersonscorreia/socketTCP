@@ -1,5 +1,5 @@
 from fileinput import close
-import sys, os, requests
+import sys, os, requests,feedparser,json
 from datetime import datetime
 from time import sleep
 
@@ -62,7 +62,7 @@ def download(mensagem,con,caminhoServer):
                 with open(caminhoServer+'\\'+arquivo[1],'rb') as arq:
                         for data in arq:                                   
                                 con.send(data)
-                        print('enviado')                        
+                                              
                 arq.close()
         except:
                 mensagem_volta = 'Arquivo Inesistente'
@@ -84,7 +84,7 @@ def upload(caminhoServer,con,mensagem):
                     sleep(0.0001) 
                     if len(data_retorno)<BUFFER_SIZE:break   
 
-            print('Recebido')                         
+                                    
 
         except:
                 mensagem_volta = f'\nERRO: {sys.exc_info()[0]}'
@@ -140,3 +140,33 @@ def twitter(usuario):
         return b
     except:
         return('Usuario não existe')
+def rss(pesquisa):
+    url =['https://feeds.folha.uol.com.br/poder/rss091.xml','https://noticias.r7.com/feed.xml','https://feeds.elpais.com/mrss-s/pages/ep/site/brasil.elpais.com/portada']    
+
+    TOKEN =  'ccf52e9d36f70b4489020d0f0e076283dd608108'
+
+    
+    materias_feed_lst = []
+    noticias = '\n'
+    for i in url:
+        materias_feed_dic = feedparser.parse(i)
+        materias_feed_lst += materias_feed_dic.entries
+        
+     
+    for materias in materias_feed_lst: 
+        portal = materias_feed_dic['feed']['title']    
+        if pesquisa.upper() in materias.title.upper():  
+
+            headers = {
+                'Authorization': f'Bearer {TOKEN}',
+                'Content-Type': 'application/json',
+            }
+
+            data = json.dumps({'long_url': materias.link , "domain": "bit.ly" })
+
+            response = requests.post('https://api-ssl.bitly.com/v4/shorten', headers=headers, data=data)
+            links = response.json()
+            links = links['link']
+            noticias += f'\nPORTAL:{portal}\nTITULO: {materias.title} \nURL:{links}\n'
+    
+    return noticias

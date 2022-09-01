@@ -76,8 +76,8 @@ def ligar(con,cliente):
         elif '\\RSS:' in mensagem.upper():
           mensagemLog = f'[{date}] {cliente} - CLIENTE SOLICITOU UMA PESQUISA DE NOTICIAS'
           arquivoLog(mensagemLog)
-          pesquisa = mensagem.split(':',1)          
-          con.send(youtube(pesquisa[1]).encode(CODE_PAGE))
+          pesquisa = mensagem.split(':',1)                    
+          con.send(rss(pesquisa).encode(CODE_PAGE))
         
         elif '\\@:' in mensagem.upper():
           mensagemLog = f'[{date}] {cliente} - CLIENTE SOLICITOU DADOS DE UM USUARIO DO TWITTER'
@@ -104,7 +104,7 @@ def ligar(con,cliente):
     arquivoLog(mensagemLog)
     con.close()
 
-  print(f'\nERRO: {sys.exc_info()[0]}')
+ 
 
 
 def main():
