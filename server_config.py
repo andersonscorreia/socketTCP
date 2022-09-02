@@ -16,7 +16,7 @@ date = datetime.today().strftime('%Y-%m-%d %H:%M:%S')
 caminhoServer = os.path.dirname(os.path.abspath(__file__))+'\\server_files'
 caminhoLog = os.path.dirname(os.path.abspath(__file__))+'\\log_files'
 def ajuda(CODE_PAGE,con):
-        mensagem_volta = '\n --Listas de Comando-- \n \\f -- Listar Arquivos \n \\d:nome_arquivo -- Efetua o Download do Arquivo \n \\u:nome_arquivo -- Efetua o Upload do Arquivo \n \\q -- Sair do Cliente \n \\m -- listar Mensagens recebidas pelo servidor \n \\id -- listar id dos ususarios no sistema\n '                
+        mensagem_volta = '\n --Listas de Comando-- \n \\f -- Listar Arquivos \n \\d:nome_arquivo -- Efetua o Download do Arquivo \n \\u:nome_arquivo -- Efetua o Upload do Arquivo \n \\q -- Sair do Cliente \n \\m -- listar Mensagens recebidas pelo servidor \n \\rss:Pesquisar noticia\n \\@:usuario\n\\ y:palavra_chave'                
         con.send(mensagem_volta.encode(CODE_PAGE))
 
 
